@@ -34,20 +34,6 @@ def open_pd(addr):
     excel_check_df = excel_check_df.groupby(['학습기준일', '훈련생 성명']).sum()
     
     # 단위기간 최종 출결 
-    if excel_check_df.get('진도율(%)') is not None:
-        print(excel_check_df.head(10))
-        print("<<<<         columns list        >>>")
-        print(excel_check_df.columns.tolist())
-        print("true")
-    else :
-        print(excel_check_df.head(10))
-        print("<<<<         columns list        >>>")
-        print(excel_check_df.columns.tolist())
-        print("false")
-        root.destroy()
-
-
-
     excel_check_df['이수시간(초)']=(excel_check_df['진도율(%)']*36).round(0)
     excel_check_df['이수시간(초)'].astype(int)
     excel_check_df= excel_check_df.drop(['진도율(%)', '강의 시간(초)','강의 이수기간(분)'], axis=1)
@@ -57,9 +43,7 @@ def open_pd(addr):
     # 파일 저장
     process_name = get_input_process()
     current_addr = os.getcwd()
-    print(current_addr)
-    # excel_check_df.to_excel(addr+process_name+' .xlsx')
-    excel_check_df.to_excel(current_addr+'\Downloads\(result) 온라인출석 '+process_name+'.xlsx')
+    excel_check_df.to_excel(current_addr+'\(result) 온라인출석 '+process_name+'.xlsx')
 
 def file_find():
     file = filedialog.askopenfilename(initialdir=r'C:/', title='select file', filetypes=(('excel file','*.xlsx'),('all files','*.*')))
@@ -79,7 +63,6 @@ def file_upload():
 
 # 단위기간 시작일 받기
 def get_input_date() -> int:
-    # start_date = tk.simpledialog.askinteger(title= "단위기간 시작일", message="단위기간 시작일(점 빼고 입력, ex/ 20221026 )", parent = root)
     start_date = pyautogui.prompt(text='단위기간 시작일(점 빼고 입력, ex/ 20221026 )', title="단위기간 시작일", default="")
 
     if start_date is not None:
@@ -89,7 +72,7 @@ def get_input_date() -> int:
         print(a)
 
 def get_input_process():
-    process = pyautogui.prompt(text='과정명을 입력해주세요, ex/ 4기 AI', title="과정 명", default="")
+    process = pyautogui.prompt(text='과정명을 입력해주세요, ex/ 3단위기간 AI', title="과정 명", default="")
     return process
 
 root.title("출결 데이터 정제 프로그램")
